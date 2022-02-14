@@ -33,6 +33,5 @@ jobs:
         image: kippingmonkey/devopsdemo22
         tags: v1, latest
         registry: docker.io
-        dockerfile: .\DevOpsDemo\DevOpsDemo\Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
