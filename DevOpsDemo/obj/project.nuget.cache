@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "cDfSUOjWShJ7EpJyWK3Tks//5vaaZMJxjq/ue0l3xGjOdesboqs9729tuqf4hETb8jVvjXGsLPmwELlCfrBfgA==",
+  "dgSpecHash": "ZynK8i3j49kXHDnh/LhryhMa3sNEE06RaC4A7lyH40JNqxsdzuZ7D1uycsBBCJQmez96HVcmGHdcIVdvUnPPEQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\User\\source\\repos\\DevOpsDemo\\DevOpsDemo\\DevOpsDemo.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\User\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.14.0\\microsoft.visualstudio.azure.containers.tools.targets.1.14.0.nupkg.sha512"
+  ],
   "logs": []
 }

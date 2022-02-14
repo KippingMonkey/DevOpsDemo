@@ -6,8 +6,9 @@ namespace DevOpsSimpleTests
     public class UnitTest1
     {
         [TestMethod]
-        public void TestMethod1()
+        public void ControlTest()
         {
+            Assert.IsTrue(true);
         }
     }
 }
