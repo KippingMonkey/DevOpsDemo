@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "f80d15ee-4801-4cca-87e3-e3ad1b411fc8": {
+      "ProjectGuid": "f80d15ee-4801-4cca-87e3-e3ad1b411fc8",
+      "DisplayName": "DevOpsDemo",
+      "ColorIndex": 0
+    },
+    "5f48691d-aac8-43a5-ad98-91d604b4af6f": {
+      "ProjectGuid": "5f48691d-aac8-43a5-ad98-91d604b4af6f",
+      "DisplayName": "DevOpsSimpleTests",
+      "ColorIndex": 1
+    }
+  },
+  "NextColorIndex": 2
+}
