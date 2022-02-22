@@ -10,7 +10,12 @@
       "ProjectGuid": "5f48691d-aac8-43a5-ad98-91d604b4af6f",
       "DisplayName": "DevOpsSimpleTests",
       "ColorIndex": 1
+    },
+    "6cf125af-62c4-42c3-b9e3-2c7a1d71405e": {
+      "ProjectGuid": "6cf125af-62c4-42c3-b9e3-2c7a1d71405e",
+      "DisplayName": "DevOpsSimpleTests",
+      "ColorIndex": 2
     }
   },
-  "NextColorIndex": 2
+  "NextColorIndex": 3
 }
