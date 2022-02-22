@@ -69,6 +69,7 @@ jobs:
         sudo apt update
         sudo apt install -y openvpn openvpn-systemd-resolved
 # after that we need to log in with our credentials. For this we use github secrets again
+# note: the id can be used to identify steps. 
     - name: Log in and connect to Open VPN
       id: connect_vpn
       uses: "kota65535/github-openvpn-connect-action@v1"
@@ -77,3 +78,18 @@ jobs:
           username: ${{ secrets.OVPN_USERNAME }}
           password: ${{ secrets.OVPN_PASSWORD }}
           client-key: ${{ secrets.OVPN_KEY }}
+# print out a message if the connection works
+# note: the run command uses the step-id-name set in the step above
+    - name: Print connection status
+      run: echo ${{ steps.connect_vpn.outputs.STATUS }}
+# HOST=mainVM public ip or DNS, USERNAME=mainVM username, KEY=mainVM private key, PORT=SSH port (22)     
+    - name: Execute remote SSH commands using our SSH key (like remote connecting via ctl)
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: whoami
+      
+          
