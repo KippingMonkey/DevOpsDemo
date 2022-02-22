@@ -1,38 +1,79 @@
+#the name of the workflow
 name: BuildTestPush
-
+# on which events will this flow be triggered
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-
+# this flow contains on job which builds & tests the app and then builds a docker image and pushes it to a private docker repository on docker.io
 jobs:
   build:
-
+# the job will run in a linux environment as specified below
     runs-on: ubuntu-latest
-
+# the steps are all the functions performed during the job
+# actions runs codesnippets behind the scenes that in themselves contains two or more steps
+# first action checksout the branch (main) second action sets up a dotnet environment in the temporary github VM
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout repository in the github workspace
+      uses: actions/checkout@v2
+# a regular expression is used to look for a certain combination of letters in the commitmessage (here:--Ver=)
+# everything between that combo and ";" will be set as the "AppVersion" variable
+    - name: Set variable to be able to specify version of app
+      run: echo "APP_VERSION=$(echo ${GIT_MESSAGE} | grep -Po '(?<=--Ver=)[^;]+')" >> $GITHUB_ENV
+      env:
+        GIT_MESSAGE: ${{github.event.head_commit.message}}
+        
+        
     - name: Setup .NET
       uses: actions/setup-dotnet@v1.9.0
       with:
         dotnet-version: 6.0.x
-
+# run is the same as running a command i a ctl, it will be executed in the github temporary VM
     - name: Restore dependencies
       run: dotnet restore
-
-    - name: Build
+# build the app
+    - name: Build app
       run: dotnet build --no-restore
-
-    - name: Test
+# run the test associated with the app
+    - name: Run app tests
       run: dotnet test --no-build --verbosity normal
+# uses a ready-made action to build a docker image from the app and push it to the repository
+# note passwords and other secret data can be stored in github secrets as variables and used as shown below
+# NOTE below step can not be used when we want to set dynamic version with a variable, this step uses a static tag
+    #- uses: mr-smithers-excellent/docker-build-push@v5
+    #  name: Build & push Docker image
+    #  with:
+    #    image: kippingmonkey/devopsdemo22
+    #    tags: v1, latest
+    #    registry: docker.io
+    #    dockerfile: ./DevOpsDemo/Dockerfile
+    #    username: ${{ secrets.DOCKER_USERNAME }}
+    #    password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - uses: mr-smithers-excellent/docker-build-push@v5
-      name: Build & push Docker image
+# instead we have to login, build image and push in separate steps. BUT, this allows for setting dynamic tags
+    - name: Install docker on githubs temporary VM and log in
+      uses: docker/login-action@v1
+      with: 
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+# the . at the end means it builds the image from the entire directory
+    - name: Build docker image using the apps Dockerfile
+      run: docker build -t kippingmonkey/devopsdemo22:$APP_VERSION .
+    - name: Push the docker image to the image repository
+      run: docker push kippingmonkey/devopsdemo22:$APP_VERSION
+      
+# next we want to install openVPN since our main VM on azure only allows traffic through our vpn VM
+    - name: Install Open VPN
+      run: |
+        sudo apt update
+        sudo apt install -y openvpn openvpn-systemd-resolved
+# after that we need to log in with our credentials. For this we use github secrets again
+    - name: Log in and connect to Open VPN
+      id: connect_vpn
+      uses: "kota65535/github-openvpn-connect-action@v1"
       with:
-        image: kippingmonkey/devopsdemo22
-        tags: v1, latest
-        registry: docker.io
-        dockerfile: ./DevOpsDemo/Dockerfile
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+          config-file: ./.github/vpn/config.ovpn
+          username: ${{ secrets.OVPN_USERNAME }}
+          password: ${{ secrets.OVPN_PASSWORD }}
+          client-key: ${{ secrets.OVPN_KEY }}
