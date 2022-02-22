@@ -90,6 +90,7 @@ jobs:
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
-        script: whoami
+        script: |
+           kubectl rollout restart deployment aspnet1
       
           
