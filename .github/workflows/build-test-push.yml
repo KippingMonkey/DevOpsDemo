@@ -75,10 +75,10 @@ jobs:
       id: connect_vpn
       uses: "kota65535/github-openvpn-connect-action@v1"
       with:
-          config-file: ./.github/vpn/config.ovpn
+          config_file: ./.github/vpn/config.ovpn
           username: ${{ secrets.OVPN_USERNAME }}
           password: ${{ secrets.OVPN_PASSWORD }}
-          client-key: ${{ secrets.OVPN_KEY }}
+          client_key: ${{ secrets.OVPN_KEY }}
 # print out a message if the connection works
 # note: the run command uses the step-id-name set in the step above
     - name: Print connection status
