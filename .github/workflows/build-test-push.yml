@@ -93,7 +93,7 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
            kubectl rollout restart deployment aspnet1
-           kubectul get all
+           kubectl get all
            ls
 
     - name: Shut down VPN
