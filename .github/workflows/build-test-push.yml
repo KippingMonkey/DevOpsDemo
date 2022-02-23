@@ -59,7 +59,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 # the . at the end means it builds the image from the entire directory
     - name: Build docker image using the apps Dockerfile
-      run: docker build -t kippingmonkey/devopsdemo22:$APP_VERSION .
+      run: docker build -t devopsdemo22:$APP_VERSION .
       
     - name: Push the docker image to the image repository
       run: docker push kippingmonkey/devopsdemo22:$APP_VERSION
