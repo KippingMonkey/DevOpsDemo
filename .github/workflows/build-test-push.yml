@@ -20,7 +20,7 @@ jobs:
 # a regular expression is used to look for a certain combination of letters in the commitmessage (here:--Ver=)
 # everything between that combo and ";" will be set as the "AppVersion" variable
     - name: Set variable to be able to specify version of app
-      run: echo "APP_VERSION=$(echo ${GIT_MESSAGE} | grep -Po '(?<=--Ver=)[^;]+')" >> $GITHUB_ENV
+      run: echo "APP_VERSION=$(echo ${GIT_MESSAGE} | grep -Po '(?<=::)[^;]+')" >> $GITHUB_ENV
       env:
         GIT_MESSAGE: ${{github.event.head_commit.message}}
         
@@ -59,7 +59,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 # the . at the end means it builds the image from the entire directory
     - name: Build docker image using the apps Dockerfile
-      run: docker build -f ./DevOpsDemo/Dockerfile -t kippingmonkey/devopsdemo22:$APP_VERSION .
+      run: docker build -f ./DevOpsDemo/Dockerfile -t kippingmonkey/devopsdemo22:$APP_VERSION -t kippingmonkey/devopsdemo22:latest .
       
     - name: Push the docker image to the image repository
       run: docker push kippingmonkey/devopsdemo22:$APP_VERSION
