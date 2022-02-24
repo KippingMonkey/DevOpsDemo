@@ -62,7 +62,7 @@ jobs:
       run: docker build -f ./DevOpsDemo/Dockerfile -t kippingmonkey/devopsdemo22:$APP_VERSION -t kippingmonkey/devopsdemo22:latest .
       
     - name: Push the docker image to the image repository
-      run: docker push kippingmonkey/devopsdemo22:$APP_VERSION
+      run: docker push kippingmonkey/devopsdemo22
       
 # next we want to install openVPN since our main VM on azure only allows traffic through our vpn VM
     - name: Install Open VPN
